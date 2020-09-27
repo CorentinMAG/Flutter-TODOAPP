@@ -35,6 +35,7 @@ class MyViewPager extends StatefulWidget {
 
 class _MyViewPagerState extends State<MyViewPager> {
   PageController _controller = PageController(initialPage: 0);
+
   @override
   void dispose() {
     _controller.dispose();
@@ -47,9 +48,11 @@ class _MyViewPagerState extends State<MyViewPager> {
       controller: _controller,
       children: [
         NoteScreen(
-          title: 'Notes & Tasks',
+          title: 'Mes notes',
         ),
-        TaskScreen(),
+        TaskScreen(
+          title: 'Mes tâches du jour',
+        ),
       ],
     );
   }

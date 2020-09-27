@@ -15,38 +15,23 @@ class NoteScreen extends StatefulWidget {
 }
 
 class _NoteScreenState extends State<NoteScreen> {
-  String currentTheme = 'jour';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: DropdownButton(
-              items: <String>[
-                currentTheme == 'jour' ? 'Mode nuit' : 'Mode jour'
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String newValue) {
-                setState(() {
-                  currentTheme = newValue == 'Mode nuit' ? 'nuit' : 'jour';
-                });
-                Provider.of<AppStateNotifier>(context, listen: false)
-                    .updateTheme(
-                        !Provider.of<AppStateNotifier>(context, listen: false)
-                            .isDarkMode);
-              },
-              icon: Icon(
-                Icons.menu,
-                color: Colors.white,
-              ),
-            ),
+          IconButton(
+            icon: Icon(
+                Provider.of<AppStateNotifier>(context, listen: false).isDarkMode
+                    ? Icons.brightness_high
+                    : Icons.brightness_low),
+            color: Colors.white,
+            onPressed: () {
+              Provider.of<AppStateNotifier>(context, listen: false).updateTheme(
+                  !Provider.of<AppStateNotifier>(context, listen: false)
+                      .isDarkMode);
+            },
           ),
         ],
       ),
@@ -80,7 +65,10 @@ class _NoteScreenState extends State<NoteScreen> {
               closedShape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(35.0)),
               ),
-              closedColor: Colors.white,
+              closedColor: Provider.of<AppStateNotifier>(context, listen: false)
+                      .isDarkMode
+                  ? Colors.black
+                  : Colors.white,
               transitionDuration: Duration(milliseconds: 500),
               closedBuilder: (BuildContext context, VoidCallback action) =>
                   MyFloatingButton(
@@ -89,8 +77,12 @@ class _NoteScreenState extends State<NoteScreen> {
                 onPressed: () => action(),
               ),
               openElevation: 5.0,
+              openColor: Provider.of<AppStateNotifier>(context, listen: false)
+                      .isDarkMode
+                  ? Colors.black
+                  : Colors.white,
               openShape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(33.0)),
+                borderRadius: BorderRadius.all(Radius.circular(0.0)),
               ),
               openBuilder: (BuildContext context, _) => CreateNote(),
               tappable: false,
