@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mytodoapp/data/mycolors.dart';
 import 'package:mytodoapp/models/colors.dart';
 import 'package:mytodoapp/models/note.dart';
 
@@ -20,15 +21,35 @@ class _CreateNoteState extends State<CreateNote> {
   }
 
   Future<bool> _popscreen() {
-    final note = Note(
-        title:
-            InputTitleController.text == '' ? null : InputTitleController.text,
-        content: InputContentController.text,
-        isArchived: false,
-        isImportant: false);
-    print(DateTime.now());
-    print(note.toString());
+    if (InputContentController.text != '') {
+      final note = Note(
+          title: InputTitleController.text == ''
+              ? null
+              : InputTitleController.text,
+          content: InputContentController.text,
+          isArchived: false,
+          isImportant: false);
+      print(note.toString());
+    }
     Navigator.pop(context);
+  }
+
+  //permet d'éviter le bug avec le keyboard et l'openContainer
+  Future _getFutureBool() {
+    return Future.delayed(Duration(milliseconds: 50)).then(
+      (_) {
+        if (InputContentController.text != '') {
+          final note = Note(
+              title: InputTitleController.text == ''
+                  ? null
+                  : InputTitleController.text,
+              content: InputContentController.text,
+              isArchived: false,
+              isImportant: false);
+        }
+        Navigator.pop(context);
+      },
+    );
   }
 
   @override
@@ -41,17 +62,8 @@ class _CreateNoteState extends State<CreateNote> {
           leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                final note = Note(
-                    title: InputTitleController.text == ''
-                        ? null
-                        : InputTitleController.text,
-                    content: InputContentController.text,
-                    isArchived: false,
-                    isImportant: false);
-                print(DateTime.now());
-                print(note.toString());
-
-                Navigator.pop(context);
+                FocusScope.of(context).unfocus();
+                _getFutureBool();
               }),
           actions: [
             IconButton(
@@ -73,6 +85,55 @@ class _CreateNoteState extends State<CreateNote> {
         body: AddNoteForm(
             titleController: InputTitleController,
             contentController: InputContentController),
+      ),
+    );
+  }
+}
+
+class AddNoteForm extends StatefulWidget {
+  final TextEditingController titleController;
+  final TextEditingController contentController;
+
+  const AddNoteForm({Key key, this.titleController, this.contentController})
+      : super(key: key);
+  @override
+  _AddNoteFormState createState() => _AddNoteFormState();
+}
+
+class _AddNoteFormState extends State<AddNoteForm> {
+  ScrollController _scrollController;
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Expanded(
+            child: CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                SliverToBoxAdapter(
+                  child: _TitleInput(context, widget.titleController),
+                ),
+                SliverToBoxAdapter(
+                  child: _ContentInput(context, widget.contentController),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            height: 30.0,
+            child: _ListChoiceColor(availableColors),
+            color: Color.fromRGBO(245, 245, 245, 0.4),
+          )
+        ],
       ),
     );
   }
@@ -121,14 +182,14 @@ Widget _ListChoiceColor(List<NoteColor> items) {
         itemBuilder: (BuildContext context, int index) {
           final NoteColor color = items[index];
           return GestureDetector(
-            onTap: () => print(color.name),
+            onTap: () => print(color.color),
             child: Stack(
               alignment: Alignment.center,
               children: [
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                  height: 60.0,
-                  width: 60.0,
+                  height: 30.0,
+                  width: 30.0,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: color.color,
@@ -139,44 +200,4 @@ Widget _ListChoiceColor(List<NoteColor> items) {
           );
         }),
   );
-}
-
-class AddNoteForm extends StatefulWidget {
-  final TextEditingController titleController;
-  final TextEditingController contentController;
-
-  const AddNoteForm({Key key, this.titleController, this.contentController})
-      : super(key: key);
-  @override
-  _AddNoteFormState createState() => _AddNoteFormState();
-}
-
-class _AddNoteFormState extends State<AddNoteForm> {
-  ScrollController _scrollController;
-
-  @override
-  void initState() {
-    _scrollController = ScrollController();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          SliverToBoxAdapter(
-            child: _TitleInput(context, widget.titleController),
-          ),
-          SliverToBoxAdapter(
-            child: _ContentInput(context, widget.contentController),
-          ),
-          // SliverToBoxAdapter(
-          //   child: _ListChoiceColor(availableColors),
-          // )
-        ],
-      ),
-    );
-  }
 }
