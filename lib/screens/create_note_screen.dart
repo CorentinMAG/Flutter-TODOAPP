@@ -12,6 +12,14 @@ class CreateNote extends StatefulWidget {
 class _CreateNoteState extends State<CreateNote> {
   final InputTitleController = TextEditingController();
   final InputContentController = TextEditingController();
+  Color mycolor = Colors.white38;
+  ScrollController _scrollController;
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -28,6 +36,7 @@ class _CreateNoteState extends State<CreateNote> {
               : InputTitleController.text,
           content: InputContentController.text,
           isArchived: false,
+          color: mycolor,
           isImportant: false);
       print(note.toString());
     }
@@ -44,8 +53,10 @@ class _CreateNoteState extends State<CreateNote> {
                   ? null
                   : InputTitleController.text,
               content: InputContentController.text,
+              color: mycolor,
               isArchived: false,
               isImportant: false);
+          print(note);
         }
         Navigator.pop(context);
       },
@@ -82,35 +93,82 @@ class _CreateNoteState extends State<CreateNote> {
             ),
           ],
         ),
-        body: AddNoteForm(
-            titleController: InputTitleController,
-            contentController: InputContentController),
+        body: _AddNoteForm(),
       ),
     );
   }
-}
 
-class AddNoteForm extends StatefulWidget {
-  final TextEditingController titleController;
-  final TextEditingController contentController;
-
-  const AddNoteForm({Key key, this.titleController, this.contentController})
-      : super(key: key);
-  @override
-  _AddNoteFormState createState() => _AddNoteFormState();
-}
-
-class _AddNoteFormState extends State<AddNoteForm> {
-  ScrollController _scrollController;
-
-  @override
-  void initState() {
-    _scrollController = ScrollController();
-    super.initState();
+  Widget _TitleInput(context, controller, color) {
+    return TextField(
+      controller: controller,
+      textCapitalization: TextCapitalization.sentences,
+      keyboardType: TextInputType.text,
+      style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Theme.of(context).textTheme.headline6.color),
+      decoration: InputDecoration(
+        fillColor: color,
+        hintText: 'Titre...',
+        hintStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).textTheme.headline6.color),
+        filled: true,
+        border: InputBorder.none,
+      ),
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _ContentInput(context, controller, color) {
+    return TextField(
+      controller: controller,
+      autofocus: true,
+      maxLines: 30,
+      style: TextStyle(color: Theme.of(context).textTheme.headline6.color),
+      decoration: InputDecoration(
+        fillColor: color,
+        hintText: 'Contenu...',
+        hintStyle:
+            TextStyle(color: Theme.of(context).textTheme.headline6.color),
+        filled: true,
+        border: InputBorder.none,
+      ),
+    );
+  }
+
+  Widget _ListChoiceColor(List<NoteColor> items) {
+    return Container(
+      height: 105.0,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: items.length,
+          itemBuilder: (BuildContext context, int index) {
+            final NoteColor color = items[index];
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  mycolor = color.color;
+                });
+              },
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                    height: 30.0,
+                    width: 30.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: color.color,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
+    );
+  }
+
+  Widget _AddNoteForm() {
     return Container(
       child: Column(
         children: [
@@ -119,10 +177,11 @@ class _AddNoteFormState extends State<AddNoteForm> {
               controller: _scrollController,
               slivers: [
                 SliverToBoxAdapter(
-                  child: _TitleInput(context, widget.titleController),
+                  child: _TitleInput(context, InputTitleController, mycolor),
                 ),
                 SliverToBoxAdapter(
-                  child: _ContentInput(context, widget.contentController),
+                  child:
+                      _ContentInput(context, InputContentController, mycolor),
                 ),
               ],
             ),
@@ -137,67 +196,4 @@ class _AddNoteFormState extends State<AddNoteForm> {
       ),
     );
   }
-}
-
-Widget _TitleInput(context, controller) {
-  return TextField(
-    controller: controller,
-    textCapitalization: TextCapitalization.sentences,
-    keyboardType: TextInputType.text,
-    style: TextStyle(
-        fontWeight: FontWeight.bold,
-        color: Theme.of(context).textTheme.headline6.color),
-    decoration: InputDecoration(
-      hintText: 'Titre...',
-      hintStyle: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Theme.of(context).textTheme.headline6.color),
-      filled: true,
-      border: InputBorder.none,
-    ),
-  );
-}
-
-Widget _ContentInput(context, controller) {
-  return TextField(
-    controller: controller,
-    autofocus: true,
-    maxLines: 30,
-    style: TextStyle(color: Theme.of(context).textTheme.headline6.color),
-    decoration: InputDecoration(
-      hintText: 'Contenu...',
-      hintStyle: TextStyle(color: Theme.of(context).textTheme.headline6.color),
-      filled: true,
-      border: InputBorder.none,
-    ),
-  );
-}
-
-Widget _ListChoiceColor(List<NoteColor> items) {
-  return Container(
-    height: 105.0,
-    child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: items.length,
-        itemBuilder: (BuildContext context, int index) {
-          final NoteColor color = items[index];
-          return GestureDetector(
-            onTap: () => print(color.color),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                  height: 30.0,
-                  width: 30.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: color.color,
-                  ),
-                ),
-              ],
-            ),
-          );
-        }),
-  );
 }
