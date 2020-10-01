@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mytodoapp/data/mycolors.dart';
 import 'package:mytodoapp/models/colors.dart';
+import 'package:mytodoapp/models/database.dart';
 import 'package:mytodoapp/models/note.dart';
 
 class CreateNote extends StatefulWidget {
@@ -28,17 +29,17 @@ class _CreateNoteState extends State<CreateNote> {
     super.dispose();
   }
 
-  Future<bool> _popscreen() {
+  Future<bool> _popscreen() async {
     if (InputContentController.text != '') {
       final note = Note(
           title: InputTitleController.text == ''
               ? null
               : InputTitleController.text,
           content: InputContentController.text,
-          isArchived: false,
-          color: mycolor,
-          isImportant: false);
-      print(note.toString());
+          isArchived: 0,
+          color: mycolor.value,
+          isImportant: 0);
+      DBProvider.db.newNote(note);
     }
     Navigator.pop(context);
   }
@@ -53,10 +54,10 @@ class _CreateNoteState extends State<CreateNote> {
                   ? null
                   : InputTitleController.text,
               content: InputContentController.text,
-              color: mycolor,
-              isArchived: false,
-              isImportant: false);
-          print(note);
+              color: mycolor.value,
+              isArchived: 0,
+              isImportant: 0);
+          DBProvider.db.newNote(note);
         }
         Navigator.pop(context);
       },
