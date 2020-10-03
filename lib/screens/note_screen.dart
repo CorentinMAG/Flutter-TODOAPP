@@ -1,7 +1,9 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mytodoapp/blocs/note_bloc.dart';
 import 'package:mytodoapp/models/appStateModifier.dart';
+import 'package:mytodoapp/models/note.dart';
 import 'package:mytodoapp/screens/create_note_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:mytodoapp/widgets/my_floating_button.dart';
@@ -15,6 +17,14 @@ class NoteScreen extends StatefulWidget {
 }
 
 class _NoteScreenState extends State<NoteScreen> {
+  NotesBloc _noteBloc = NotesBloc();
+
+  @override
+  void didChangeDependencies() {
+    _noteBloc = NotesBloc();
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,16 +45,43 @@ class _NoteScreenState extends State<NoteScreen> {
           ),
         ],
       ),
-      body: Stack(
-        children: [
-          Center(
-            child: Container(
-              width: 300.0,
-              height: 300.0,
-              child: SvgPicture.asset('lib/assets/icon-idea.svg'),
+      body: Container(
+        child: Center(
+          child: Container(
+            width: 300.0,
+            height: 300.0,
+            child: StreamBuilder<List<Note>>(
+              stream: _noteBloc.noteStream,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  //print(snapshot.data);
+                  return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      Note note = snapshot.data[index];
+                      return Dismissible(
+                        background: Container(
+                          color: Colors.redAccent,
+                        ),
+                        key: Key(note.id.toString()),
+                        onDismissed: (direction) {
+                          _noteBloc.deleteNote(note);
+                        },
+                        child: Container(
+                          color: Color(note.color),
+                          child: ListTile(
+                            title: Text(note.content),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+                return SvgPicture.asset('lib/assets/icon-idea.svg');
+              },
             ),
           ),
-        ],
+        ),
       ),
       floatingActionButton: Stack(
         children: [
@@ -84,7 +121,8 @@ class _NoteScreenState extends State<NoteScreen> {
               openShape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(0.0)),
               ),
-              openBuilder: (BuildContext context, _) => CreateNote(),
+              openBuilder: (BuildContext context, _) =>
+                  CreateNote(bloc: _noteBloc),
               tappable: false,
             ),
           ),

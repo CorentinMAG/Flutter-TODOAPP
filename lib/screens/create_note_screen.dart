@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mytodoapp/blocs/note_bloc.dart';
 import 'package:mytodoapp/data/mycolors.dart';
 import 'package:mytodoapp/models/colors.dart';
-import 'package:mytodoapp/models/database.dart';
 import 'package:mytodoapp/models/note.dart';
 
 class CreateNote extends StatefulWidget {
+  final NotesBloc bloc;
+
+  const CreateNote({Key key, this.bloc}) : super(key: key);
+
   @override
   _CreateNoteState createState() => _CreateNoteState();
 }
@@ -39,7 +43,8 @@ class _CreateNoteState extends State<CreateNote> {
           isArchived: 0,
           color: mycolor.value,
           isImportant: 0);
-      DBProvider.db.newNote(note);
+      print(note);
+      widget.bloc.addNote(note);
     }
     Navigator.pop(context);
   }
@@ -57,7 +62,7 @@ class _CreateNoteState extends State<CreateNote> {
               color: mycolor.value,
               isArchived: 0,
               isImportant: 0);
-          DBProvider.db.newNote(note);
+          widget.bloc.addNote(note);
         }
         Navigator.pop(context);
       },

@@ -14,8 +14,29 @@ class Note extends Object {
     return "{id: ${this.id}, date: ${this.date}, content: ${this.content}, title: ${this.title}, isArchived: ${this.isArchived}, isImportant: ${this.isImportant}, color: ${this.color}";
   }
 
+  Note.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        date = json['date'],
+        title = json['title'],
+        content = json['content'],
+        isArchived = json['isArchived'],
+        isImportant = json['isImportant'],
+        color = json['color'];
+
   Map<String, dynamic> toMap() {
     return {
+      'date': date,
+      'title': title,
+      'content': content,
+      'isArchived': isArchived,
+      'isImportant': isImportant,
+      'color': color
+    };
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
       'date': date,
       'title': title,
       'content': content,
