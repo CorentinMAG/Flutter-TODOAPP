@@ -95,7 +95,12 @@ class _CreateNoteState extends State<CreateNote> {
                 Icons.delete,
                 color: Colors.white,
               ),
-              onPressed: () => print('deleted'),
+              onPressed: () {
+                FocusScope.of(context).unfocus();
+                Future.delayed(Duration(milliseconds: 50)).then(
+                  (value) => Navigator.pop(context),
+                );
+              },
             ),
           ],
         ),

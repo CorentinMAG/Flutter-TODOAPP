@@ -7,14 +7,32 @@ class NoteProvider {
 
   Future<int> newNote(Note newNote) async {
     final db = await dbProvider.database;
-    var result = await db.insert('note', newNote.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    var result = await db.insert(
+      'note',
+      newNote.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
     return result;
   }
 
   Future<int> deleteNote(Note note) async {
     final db = await dbProvider.database;
-    var result = db.delete('note', where: "id=?", whereArgs: [note.id]);
+    var result = db.delete(
+      'note',
+      where: "id=?",
+      whereArgs: [note.id],
+    );
+    return result;
+  }
+
+  Future<int> updateNote(Note note) async {
+    final db = await dbProvider.database;
+    var result = db.update(
+      'note',
+      note.toMap(),
+      where: "id=?",
+      whereArgs: [note.id],
+    );
     return result;
   }
 
@@ -31,6 +49,7 @@ class NoteProvider {
           content: maps[i]['content'],
           isArchived: maps[i]['isArchived'],
           isImportant: maps[i]['isImportant'],
+          isSelected: maps[i]['isSelected'],
           color: maps[i]['color']);
     });
   }

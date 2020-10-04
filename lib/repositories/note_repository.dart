@@ -8,5 +8,7 @@ class Repository {
 
   Future<int> createNote(Note note) => noteProvider.newNote(note);
 
+  Future<int> updateNote(Note note) => noteProvider.updateNote(note);
+
   Future<int> deleteNote(Note note) => noteProvider.deleteNote(note);
 }

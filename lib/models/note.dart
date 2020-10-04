@@ -7,11 +7,19 @@ class Note extends Object {
   String title;
   int isArchived;
   int isImportant;
+  int isSelected;
   int color;
 
   @override
   String toString() {
-    return "{id: ${this.id}, date: ${this.date}, content: ${this.content}, title: ${this.title}, isArchived: ${this.isArchived}, isImportant: ${this.isImportant}, color: ${this.color}";
+    return "{id: ${this.id},"
+        "date: ${this.date},"
+        "content: ${this.content},"
+        "title: ${this.title},"
+        "isArchived: ${this.isArchived},"
+        "isImportant: ${this.isImportant},"
+        "isSelected: ${this.isSelected},"
+        "color: ${this.color},";
   }
 
   Note.fromJson(Map<String, dynamic> json)
@@ -21,6 +29,7 @@ class Note extends Object {
         content = json['content'],
         isArchived = json['isArchived'],
         isImportant = json['isImportant'],
+        isSelected = json['isSelected'],
         color = json['color'];
 
   Map<String, dynamic> toMap() {
@@ -30,6 +39,7 @@ class Note extends Object {
       'content': content,
       'isArchived': isArchived,
       'isImportant': isImportant,
+      'isSelected': isSelected,
       'color': color
     };
   }
@@ -42,6 +52,7 @@ class Note extends Object {
       'content': content,
       'isArchived': isArchived,
       'isImportant': isImportant,
+      'isSelected': isSelected,
       'color': color
     };
   }
@@ -52,9 +63,11 @@ class Note extends Object {
     this.title,
     @required this.isArchived,
     @required this.isImportant,
+    isSelected,
     color,
     date,
   })  : date = date ?? DateTime.now().toString(),
         id = id ?? 0,
+        isSelected = isSelected ?? 0,
         color = color ?? Colors.white38.value;
 }

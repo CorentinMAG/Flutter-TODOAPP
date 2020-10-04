@@ -16,7 +16,7 @@ class DBProvider {
   createDB() async {
     var database = await openDatabase(
         join(await getDatabasesPath(), 'noteandtask.db'),
-        version: 1,
+        version: 2,
         onCreate: initDB,
         onUpgrade: onUpgrade);
     return database;
@@ -30,6 +30,7 @@ class DBProvider {
         'content TEXT,'
         'isArchived int,'
         'isImportant int,'
+        'isSelected int,'
         'color int)');
   }
 

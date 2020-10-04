@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mytodoapp/widgets/my_app_bar.dart';
 
 class TaskScreen extends StatefulWidget {
-  final String title;
-
-  const TaskScreen({Key key, this.title}) : super(key: key);
+  const TaskScreen({Key key}) : super(key: key);
   @override
   _TaskScreenState createState() => _TaskScreenState();
 }
@@ -13,8 +12,8 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+      appBar: MyAppBar(
+        title: "Mes tâches du jour",
       ),
       body: Container(
         child: Center(

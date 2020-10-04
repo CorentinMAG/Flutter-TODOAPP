@@ -26,6 +26,11 @@ class NotesBloc {
     fetchAllNotes();
   }
 
+  void updateNote(Note note) async {
+    int value = await _repository.updateNote(note);
+    fetchAllNotes();
+  }
+
   void deleteNote(Note note) async {
     int value = await _repository.deleteNote(note);
     fetchAllNotes();

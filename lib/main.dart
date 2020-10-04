@@ -48,10 +48,10 @@ class _MyViewPagerState extends State<MyViewPager> {
       controller: _controller,
       children: [
         NoteScreen(
-          title: 'Mes notes',
+          key: PageStorageKey("note"),
         ),
         TaskScreen(
-          title: 'Mes tâches du jour',
+          key: PageStorageKey("task"),
         ),
       ],
     );
