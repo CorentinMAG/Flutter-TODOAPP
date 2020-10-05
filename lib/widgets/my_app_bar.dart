@@ -39,9 +39,7 @@ class _MyAppBarState extends State<MyAppBar> {
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
-              for (var note in widget.select) {
-                widget.onDelete(note);
-              }
+              widget.onDelete();
             },
           ),
       ],

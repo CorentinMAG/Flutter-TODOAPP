@@ -38,15 +38,25 @@ class _NoteScreenState extends State<NoteScreen> {
     });
   }
 
+  void clearSelected() {
+    selectedNote.forEach((note) {
+      _noteBloc.deleteNote(note);
+    });
+    setState(() {
+      selectedNote.clear();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
         title: "Mes notes",
         select: selectedNote,
-        onDelete: (note) => _noteBloc.deleteNote(note),
+        onDelete: clearSelected,
       ),
       body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: StreamBuilder<List<Note>>(
           stream: _noteBloc.noteStream,
           builder: (context, snapshot) {

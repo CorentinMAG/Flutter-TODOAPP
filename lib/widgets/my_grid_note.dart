@@ -16,7 +16,6 @@ class MyGridNote extends StatefulWidget {
 class _MyGridNoteState extends State<MyGridNote> {
   @override
   Widget build(BuildContext context) {
-    //TODO: le champ isSelected dans la bdd est inutile il faut en faire un local
     final Note note = widget.note;
     return InkWell(
       onTap: () => print(note.toString()),
@@ -34,26 +33,40 @@ class _MyGridNoteState extends State<MyGridNote> {
         );
       },
       child: Container(
-        child: Card(
-          color: Color(note.color),
-          child: Column(
-            children: [
-              if (note.title != null) Text(note.title),
-              Text(note.content),
-              note.isSelected == 1
-                  ? Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(
-                          Icons.check_circle,
-                          color: Colors.black,
-                        ),
+        child: Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              child: Card(
+                elevation: 1.0,
+                color: Color(note.color),
+                child: Column(
+                  children: [
+                    if (note.title != null)
+                      Text(
+                        note.title,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).textTheme.headline6.color),
                       ),
-                    )
-                  : Container(),
-            ],
-          ),
+                    Text(note.content),
+                  ],
+                ),
+              ),
+            ),
+            note.isSelected == 1
+                ? Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.check_circle,
+                        color: Colors.black,
+                      ),
+                    ),
+                  )
+                : Container(),
+          ],
         ),
       ),
     );
