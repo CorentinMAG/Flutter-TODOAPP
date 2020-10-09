@@ -38,7 +38,11 @@ class _MyGridNoteState extends State<MyGridNote> {
           children: [
             Container(
               width: double.infinity,
+              height: 200.0,
               child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
                 elevation: 1.0,
                 color: Color(note.color),
                 child: Padding(
@@ -52,13 +56,19 @@ class _MyGridNoteState extends State<MyGridNote> {
                           note.title,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
+                              fontSize: 22.0,
                               color:
                                   Theme.of(context).textTheme.headline6.color),
+                        ),
+                      if (note.title != null)
+                        SizedBox(
+                          height: 15.0,
                         ),
                       Expanded(
                         child: Text(
                           note.content,
                           overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 18.0),
                           maxLines: 20,
                         ),
                       ),
