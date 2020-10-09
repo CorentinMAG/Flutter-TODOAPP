@@ -72,6 +72,15 @@ class _NoteScreenState extends State<NoteScreen> {
                       addToSelect: (note) => addToSelect(note),
                       removeFromSelect: (note) => removeFromSelect(note),
                       note: note,
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateNote(
+                            note: note,
+                            bloc: _noteBloc,
+                          ),
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -92,6 +101,7 @@ class _NoteScreenState extends State<NoteScreen> {
               bottom: 120.0,
               right: 0,
               child: MyFloatingButton(
+                heroTag: "Voice",
                 icon: Icons.mic,
                 onPressed: () => print('Voice'),
                 color: Colors.white,

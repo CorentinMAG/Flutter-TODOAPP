@@ -7,58 +7,84 @@ import 'package:mytodoapp/models/note.dart';
 
 class CreateNote extends StatefulWidget {
   final NotesBloc bloc;
+  final Note note;
 
-  const CreateNote({Key key, this.bloc}) : super(key: key);
+  const CreateNote({Key key, this.bloc, this.note}) : super(key: key);
 
   @override
   _CreateNoteState createState() => _CreateNoteState();
 }
 
 class _CreateNoteState extends State<CreateNote> {
-  final InputTitleController = TextEditingController();
-  final InputContentController = TextEditingController();
+  TextEditingController _inputTitleController;
+  TextEditingController _inputContentController;
   Color mycolor = Colors.white38;
   ScrollController _scrollController;
 
   @override
   void initState() {
     _scrollController = ScrollController();
+    _inputTitleController = TextEditingController(
+        text: widget.note != null ? widget.note.title : null);
+    _inputContentController = TextEditingController(
+        text: widget.note != null ? widget.note.content : null);
+    if (widget.note != null) {
+      mycolor = Color(widget.note.color);
+    }
     super.initState();
   }
 
   @override
   void dispose() {
-    InputTitleController.dispose();
-    InputContentController.dispose();
+    _inputTitleController.dispose();
+    _inputContentController.dispose();
     super.dispose();
   }
 
-  Future<bool> _popscreen() async {
-    if (InputContentController.text != '') {
+  void _popscreen() {
+    if (_inputContentController.text != '') {
       final note = Note(
-          title: InputTitleController.text == ''
+          title: _inputTitleController.text == ''
               ? null
-              : InputTitleController.text,
-          content: InputContentController.text,
+              : _inputTitleController.text,
+          content: _inputContentController.text,
           isArchived: 0,
           color: mycolor.value,
           isImportant: 0);
-      print(note);
       widget.bloc.addNote(note);
     }
     Navigator.pop(context);
+  }
+
+  _delete() {
+    if (widget.note == null) {
+      FocusScope.of(context).unfocus();
+      Future.delayed(Duration(milliseconds: 50)).then(
+        (value) => Navigator.pop(context),
+      );
+    } else {
+      final note = Note(
+          id: widget.note.id,
+          title: _inputTitleController.text,
+          content: _inputContentController.text,
+          color: mycolor.value,
+          isArchived: 0,
+          isImportant: 0);
+      widget.bloc.deleteNote(note);
+      Navigator.pop(context);
+    }
   }
 
   //permet d'éviter le bug avec le keyboard et l'openContainer
   Future _getFutureBool() {
     return Future.delayed(Duration(milliseconds: 50)).then(
       (_) {
-        if (InputContentController.text != '') {
+        if (_inputContentController.text != '') {
           final note = Note(
-              title: InputTitleController.text == ''
+              title: _inputTitleController.text == ''
                   ? null
-                  : InputTitleController.text,
-              content: InputContentController.text,
+                  : _inputTitleController.text,
+              content: _inputContentController.text,
               color: mycolor.value,
               isArchived: 0,
               isImportant: 0);
@@ -69,10 +95,27 @@ class _CreateNoteState extends State<CreateNote> {
     );
   }
 
+  void _updateNote() {
+    final updatenote = Note(
+        id: widget.note.id,
+        title: _inputTitleController.text,
+        content: _inputContentController.text,
+        color: mycolor.value,
+        isArchived: 0,
+        isImportant: 0);
+    widget.bloc.updateNote(updatenote);
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _popscreen,
+      onWillPop: () {
+        if (widget.note == null)
+          _popscreen();
+        else
+          _updateNote();
+      },
       child: Scaffold(
         appBar: AppBar(
           title: Text('Créer une note'),
@@ -80,7 +123,10 @@ class _CreateNoteState extends State<CreateNote> {
               icon: Icon(Icons.arrow_back),
               onPressed: () {
                 FocusScope.of(context).unfocus();
-                _getFutureBool();
+                if (widget.note == null)
+                  _getFutureBool();
+                else
+                  _updateNote();
               }),
           actions: [
             IconButton(
@@ -95,12 +141,7 @@ class _CreateNoteState extends State<CreateNote> {
                 Icons.delete,
                 color: Colors.white,
               ),
-              onPressed: () {
-                FocusScope.of(context).unfocus();
-                Future.delayed(Duration(milliseconds: 50)).then(
-                  (value) => Navigator.pop(context),
-                );
-              },
+              onPressed: () => _delete(),
             ),
           ],
         ),
@@ -188,11 +229,11 @@ class _CreateNoteState extends State<CreateNote> {
               controller: _scrollController,
               slivers: [
                 SliverToBoxAdapter(
-                  child: _TitleInput(context, InputTitleController, mycolor),
+                  child: _TitleInput(context, _inputTitleController, mycolor),
                 ),
                 SliverToBoxAdapter(
                   child:
-                      _ContentInput(context, InputContentController, mycolor),
+                      _ContentInput(context, _inputContentController, mycolor),
                 ),
               ],
             ),
