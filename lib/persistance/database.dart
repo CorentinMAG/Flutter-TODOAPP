@@ -23,7 +23,7 @@ class DBProvider {
   }
 
   Future initDB(Database database, int version) async {
-    return await database.execute('CREATE TABLE note('
+    await database.execute('CREATE TABLE note('
         'id INTEGER PRIMARY KEY AUTOINCREMENT,'
         'date TEXT,'
         'title TEXT,'
@@ -32,10 +32,17 @@ class DBProvider {
         'isImportant int,'
         'isSelected int,'
         'color int)');
+    await database.execute('CREATE TABLE task('
+        'id INTEGER PRIMARY KEY AUTOINCREMENT,'
+        'date TEXT,'
+        'content TEXT,'
+        'isAlarm int,'
+        'isTicked int)');
   }
 
   Future onUpgrade(Database database, int oldVersion, int newVersion) async {
     await database.execute('DROP TABLE note');
+    await database.execute('DROP TABLE task');
     await initDB(database, newVersion);
   }
 }

@@ -1,5 +1,5 @@
 import 'package:mytodoapp/models/note.dart';
-import 'package:mytodoapp/repositories/note_repository.dart';
+import 'package:mytodoapp/repositories/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class NotesBloc {

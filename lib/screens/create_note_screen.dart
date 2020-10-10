@@ -65,7 +65,9 @@ class _CreateNoteState extends State<CreateNote> {
     } else {
       final note = Note(
           id: widget.note.id,
-          title: _inputTitleController.text,
+          title: _inputTitleController.text == ''
+              ? null
+              : _inputTitleController.text,
           content: _inputContentController.text,
           color: mycolor.value,
           isArchived: 0,
@@ -98,7 +100,9 @@ class _CreateNoteState extends State<CreateNote> {
   void _updateNote() {
     final updatenote = Note(
         id: widget.note.id,
-        title: _inputTitleController.text,
+        title: _inputTitleController.text == ''
+            ? null
+            : _inputTitleController.text,
         content: _inputContentController.text,
         color: mycolor.value,
         isArchived: 0,

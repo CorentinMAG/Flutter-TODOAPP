@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static final ThemeData lightTheme = ThemeData(
+    accentColor: Colors.white70,
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: AppBarTheme(
       color: Colors.deepOrangeAccent,
@@ -12,7 +13,7 @@ class AppTheme {
     colorScheme: ColorScheme.light(
       primary: Colors.white,
       onPrimary: Colors.white,
-      primaryVariant: Colors.blue,
+      primaryVariant: Colors.black,
       secondary: Colors.deepOrangeAccent,
     ),
     cardTheme: CardTheme(
@@ -34,6 +35,7 @@ class AppTheme {
   );
 
   static final ThemeData darkTheme = ThemeData(
+    accentColor: Colors.black,
     scaffoldBackgroundColor: Colors.black,
     appBarTheme: AppBarTheme(
       color: Colors.deepOrangeAccent,

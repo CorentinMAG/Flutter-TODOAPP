@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mytodoapp/widgets/floatting_buttons.dart';
 import 'package:mytodoapp/widgets/my_app_bar.dart';
 
 class TaskScreen extends StatefulWidget {
@@ -26,6 +27,9 @@ class _TaskScreenState extends State<TaskScreen> {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloattingButtons(
+        isNote: false,
       ),
     );
   }

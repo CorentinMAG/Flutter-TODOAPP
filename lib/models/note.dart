@@ -12,14 +12,16 @@ class Note extends Object {
 
   @override
   String toString() {
-    return "{id: ${this.id},"
+    return "{"
+        "id: ${this.id},"
         "date: ${this.date},"
         "content: ${this.content},"
         "title: ${this.title},"
         "isArchived: ${this.isArchived},"
         "isImportant: ${this.isImportant},"
         "isSelected: ${this.isSelected},"
-        "color: ${this.color},";
+        "color: ${this.color},"
+        "}";
   }
 
   Note.fromJson(Map<String, dynamic> json)

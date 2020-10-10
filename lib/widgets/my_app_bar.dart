@@ -21,6 +21,7 @@ class _MyAppBarState extends State<MyAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 1,
       title: Text(widget.title),
       actions: [
         IconButton(
