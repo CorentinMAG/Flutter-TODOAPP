@@ -28,7 +28,7 @@ class TaskProvider {
   Future<int> updateTask(Task task) async {
     final Database db = await dbProvider.database;
     var result = db.update(
-      'note',
+      'task',
       task.toMap(),
       where: "id=?",
       whereArgs: [task.id],
@@ -39,7 +39,7 @@ class TaskProvider {
   Future<List<Task>> getAllTasks() async {
     final Database db = await dbProvider.database;
 
-    final List<Map<String, dynamic>> maps = await db.query('note');
+    final List<Map<String, dynamic>> maps = await db.query('task');
 
     return List.generate(maps.length, (i) {
       return Task(

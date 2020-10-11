@@ -11,9 +11,11 @@ class Task {
     id,
     date,
     @required this.content,
-    this.isAlarm,
-    this.isTicked,
+    isAlarm,
+    isTicked,
   })  : date = date ?? DateTime.now().toString(),
+        isAlarm = isAlarm ?? 0,
+        isTicked = isTicked ?? 0,
         id = id ?? 0;
 
   @override

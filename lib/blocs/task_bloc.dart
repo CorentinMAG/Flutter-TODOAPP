@@ -1,9 +1,9 @@
 import 'package:mytodoapp/models/task.dart';
-import 'package:mytodoapp/repositories/repository.dart';
+import 'package:mytodoapp/repositories/task_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TaskBloc {
-  final _repository = Repository();
+  final _repository = TaskRepository();
   PublishSubject<List<Task>> _taskFetcher = PublishSubject<List<Task>>();
 
   Stream<List<Task>> get taskStream => _taskFetcher.stream;

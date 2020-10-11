@@ -16,7 +16,7 @@ class DBProvider {
   createDB() async {
     var database = await openDatabase(
         join(await getDatabasesPath(), 'noteandtask.db'),
-        version: 2,
+        version: 3,
         onCreate: initDB,
         onUpgrade: onUpgrade);
     return database;

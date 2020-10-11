@@ -1,9 +1,9 @@
 import 'package:mytodoapp/models/note.dart';
-import 'package:mytodoapp/repositories/repository.dart';
+import 'package:mytodoapp/repositories/note_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class NotesBloc {
-  final _repository = Repository();
+  final _repository = NoteRepository();
   PublishSubject<List<Note>> _notesFetcher = PublishSubject<List<Note>>();
 
   Stream<List<Note>> get noteStream => _notesFetcher.stream;

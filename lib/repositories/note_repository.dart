@@ -3,7 +3,7 @@ import 'package:mytodoapp/models/task.dart';
 import 'package:mytodoapp/providers/note_provider.dart';
 import 'package:mytodoapp/providers/task_provider.dart';
 
-class Repository {
+class NoteRepository {
   final noteProvider = NoteProvider();
   final taskProvider = TaskProvider();
 
