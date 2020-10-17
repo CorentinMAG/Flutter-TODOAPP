@@ -22,6 +22,7 @@ class AppTheme {
     iconTheme: IconThemeData(
       color: Colors.green,
     ),
+    unselectedWidgetColor: Colors.black,
     textTheme: TextTheme(
       headline6: TextStyle(
         color: Colors.black,
@@ -35,7 +36,7 @@ class AppTheme {
   );
 
   static final ThemeData darkTheme = ThemeData(
-    accentColor: Colors.black,
+    accentColor: Colors.black26,
     scaffoldBackgroundColor: Colors.black,
     appBarTheme: AppBarTheme(
       color: Colors.deepOrangeAccent,
@@ -52,6 +53,7 @@ class AppTheme {
     cardTheme: CardTheme(
       color: Colors.white,
     ),
+    unselectedWidgetColor: Colors.white,
     iconTheme: IconThemeData(
       color: Colors.white54,
     ),

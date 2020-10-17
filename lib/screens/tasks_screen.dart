@@ -43,6 +43,10 @@ class _TaskScreenState extends State<TaskScreen> {
     super.didChangeDependencies();
   }
 
+  void toggleTask(Task task) {
+    _taskBloc.updateTask(task);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,8 +64,9 @@ class _TaskScreenState extends State<TaskScreen> {
               return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
-                  final task = snapshot.data[index];
+                  final Task task = snapshot.data[index];
                   return TaskTile(
+                    toggle: (task) => toggleTask(task),
                     task: task,
                     addToSelect: (task) => addToSelect(task),
                     removeFromSelect: (task) => removeFromSelect(task),
