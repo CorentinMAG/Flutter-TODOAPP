@@ -123,6 +123,7 @@ class _FloattingButtonsState extends State<FloattingButtons> {
                   if (taskController.text != '') {
                     final task = Task(content: taskController.text);
                     createTask(task);
+                    taskController.text = '';
                   }
                   Navigator.pop(context);
                   setState(() {

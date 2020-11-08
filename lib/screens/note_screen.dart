@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mytodoapp/blocs/note_bloc.dart';
@@ -17,11 +19,17 @@ class _NoteScreenState extends State<NoteScreen>
     with AutomaticKeepAliveClientMixin<NoteScreen> {
   List<Note> selectedNote = [];
   NotesBloc _noteBloc = NotesBloc();
+  ScrollController _gridController = ScrollController();
 
   @override
   void didChangeDependencies() {
     _noteBloc = NotesBloc();
     super.didChangeDependencies();
+  }
+
+  void goNext() {
+    Timer(Duration(milliseconds: 300),
+        () => _gridController.jumpTo(_gridController.position.maxScrollExtent));
   }
 
   void addToSelect(Note note) {
@@ -61,11 +69,13 @@ class _NoteScreenState extends State<NoteScreen>
             if (snapshot.hasData) {
               return GridView.count(
                 crossAxisCount: 2,
+                controller: _gridController,
                 crossAxisSpacing: 8.0,
                 children: List.generate(
                   snapshot.data.length,
                   (index) {
                     final Note note = snapshot.data[index];
+                    goNext();
                     return MyGridNote(
                       key: Key(note.id.toString()),
                       addToSelect: (note) => addToSelect(note),
@@ -99,6 +109,5 @@ class _NoteScreenState extends State<NoteScreen>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
