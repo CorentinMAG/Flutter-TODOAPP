@@ -12,7 +12,8 @@ class TaskScreen extends StatefulWidget {
   _TaskScreenState createState() => _TaskScreenState();
 }
 
-class _TaskScreenState extends State<TaskScreen> {
+class _TaskScreenState extends State<TaskScreen>
+    with AutomaticKeepAliveClientMixin<TaskScreen> {
   List<Task> selectedTask = [];
   TaskBloc _taskBloc = TaskBloc();
 
@@ -90,4 +91,8 @@ class _TaskScreenState extends State<TaskScreen> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

@@ -13,7 +13,8 @@ class NoteScreen extends StatefulWidget {
   _NoteScreenState createState() => _NoteScreenState();
 }
 
-class _NoteScreenState extends State<NoteScreen> {
+class _NoteScreenState extends State<NoteScreen>
+    with AutomaticKeepAliveClientMixin<NoteScreen> {
   List<Note> selectedNote = [];
   NotesBloc _noteBloc = NotesBloc();
 
@@ -96,4 +97,8 @@ class _NoteScreenState extends State<NoteScreen> {
       floatingActionButton: FloattingButtons(noteBloc: _noteBloc, isNote: true),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
